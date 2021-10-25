@@ -1,1 +1,1 @@
-gcc -o main main.c -lSDL2
+gcc -o main main.c ball.c -lSDL2
