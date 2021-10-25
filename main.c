@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 
+#include "pong.h"
+
 SDL_Window* window = 0;
 
 int main()
@@ -15,7 +17,12 @@ int main()
 	}
 
 	// Create the SDL window.
-	window = SDL_CreateWindow( "PONG!", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN );
+	window = SDL_CreateWindow(
+		"PONG!",
+		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+		SCREEN_WIDTH, SCREEN_HEIGHT,
+		SDL_WINDOW_SHOWN );
+
 	if ( !window )
 	{
 		printf( "SDL window creation failed.\n" );
