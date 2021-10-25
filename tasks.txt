@@ -1,0 +1,26 @@
+* Structure du jeu
+Initialisations:
+ 1. Positions des raquettes et de la balle
+ 2. Vitesse de la balle
+ 3. Scores à 0
+
+La boucle de jeu constituée des étapes principales suivantes:
+ 1. Affichage du filet
+ 2. Affichage du score (à coder en dernier!)
+ 3. Affichage des raquettes et de la balle
+ 4. Acquisition des évènements du clavier (joueur 1 et joueur 2)
+ 5. Déplacement des raquettes
+ 6. Déplacement de la balle
+ 7. Test de collision balle / playground (left et right)
+    - Mise à jour du score au besoin
+    - Optionnel: réinitialisation de la position de la balle pour
+      redémarrer un échange.  Dans la version du coach, le jeu ne
+      s'arrête jamais, ce n'est pas plus mal!  À vous de voir ce que
+      vous souhaitez faire (la balle pourra partir alternativement
+      vers le joueur 1, puis vers le joueur 2, etc.).
+ 8. Modification des paramètres de vitesse de la balle (sens)
+ 9. Test de collision balle / playground (bottom et top)
+    - Modification des paramètres de vitesse de la balle (sens)
+ 10. Test de collision balle / raquette 1 et balle / raquette 2
+     - Modification des paramètres de vitesse de la balle (sens,
+       accélération: voir [[*Acc%C3%A9l%C3%A9ration de la balle][section dédiée]])

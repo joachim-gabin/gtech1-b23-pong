@@ -23,12 +23,16 @@ int main()
 	}
 
 	// Wait 3 seconds then exit the game.
-	for ( int i = 1; i <= 3; ++i )
-	{
-		SDL_Delay( 1000 );
-		printf( "%i\n", i );
-	}
+	int quit = 0;
+	SDL_Event e;
 
+	while (!quit){
+		while (SDL_PollEvent(&e) != 0) {
+			if (e.type == SDL_QUIT) {
+				quit = 1;
+			}
+		}
+	}
 	SDL_DestroyWindow( window );
 
 	SDL_Quit();
