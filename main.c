@@ -29,6 +29,8 @@ int main()
 	ball_t ball;
 	ball_init( &ball, 5 );
 
+	Uint32 frameStart, frameTime, frameDelay = 10;
+
 	while (!closeRequest){
 
 		while (SDL_PollEvent(&e) != 0) {
@@ -44,18 +46,26 @@ int main()
 						break;
 				}
 			}
+		}
 
-			ball_step_pos( &ball );
+		frameStart = SDL_GetTicks();
 
-			SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-			SDL_RenderClear( renderer );
+		ball_step_pos( &ball );
+
+		SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+		SDL_RenderClear( renderer );
 
 
-			SDL_Rect fillRect = { ball.posX, ball.posY, 10, 10 };
-			SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF );
-			SDL_RenderFillRect( renderer, &fillRect);
+		SDL_Rect fillRect = { ball.posX, ball.posY, 10, 10 };
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF );
+		SDL_RenderFillRect( renderer, &fillRect);
 
-			SDL_RenderPresent( renderer );
+		SDL_RenderPresent( renderer );
+
+		frameTime = SDL_GetTicks() - frameStart;
+		if ( frameTime < frameDelay )
+		{
+			SDL_Delay( frameDelay - frameTime );
 		}
 	}
 
