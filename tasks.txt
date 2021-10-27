@@ -10,7 +10,7 @@ La boucle de jeu constituée des étapes principales suivantes:
  3. Affichage des raquettes et de la balle
  4. Acquisition des évènements du clavier (joueur 1 et joueur 2)
  5. Déplacement des raquettes
- 6. Déplacement de la balle
+[OK] - 6. Déplacement de la balle
  7. Test de collision balle / playground (left et right)
     - Mise à jour du score au besoin
     - Optionnel: réinitialisation de la position de la balle pour
@@ -19,7 +19,7 @@ La boucle de jeu constituée des étapes principales suivantes:
       vous souhaitez faire (la balle pourra partir alternativement
       vers le joueur 1, puis vers le joueur 2, etc.).
  8. Modification des paramètres de vitesse de la balle (sens)
- 9. Test de collision balle / playground (bottom et top)
+[OK] 9. Test de collision balle / playground (bottom et top)
     - Modification des paramètres de vitesse de la balle (sens)
  10. Test de collision balle / raquette 1 et balle / raquette 2
      - Modification des paramètres de vitesse de la balle (sens,

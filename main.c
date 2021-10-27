@@ -33,7 +33,7 @@ int main()
 	SDL_Event e;
 
 	ball_t ball;
-	ball_init( &ball, 5 );
+	ball_init( &ball, 3, 3 );
 
 	Uint32 frameStart, frameTime, frameDelay = 20;
 
