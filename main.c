@@ -4,10 +4,79 @@
 #include <SDL2/SDL.h>
 
 #include "pong.h"
+#include "ball.h"
+
+
 
 SDL_Window* window = 0;
+SDL_Renderer* renderer = 0;
+
+int  init( void );
+void quit( void );
+
+
 
 int main()
+{
+	int initCode = init();
+	if ( initCode )
+		return initCode;
+
+	// Wait 3 seconds then exit the game.
+	bool closeRequest = false;
+	SDL_Event e;
+
+	ball_t ball;
+	ball_init( &ball, 5 );
+
+	Uint32 frameStart, frameTime, frameDelay = 10;
+
+	while (!closeRequest){
+
+		while (SDL_PollEvent(&e) != 0) {
+
+			if (e.type == SDL_QUIT) {
+				closeRequest = true;
+
+			}
+			else if (e.type == SDL_KEYDOWN) {
+				switch(e.key.keysym.sym) {
+					case SDLK_ESCAPE:
+						closeRequest = true;
+						break;
+				}
+			}
+		}
+
+		frameStart = SDL_GetTicks();
+
+		ball_step_pos( &ball );
+
+		SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+		SDL_RenderClear( renderer );
+
+
+		SDL_Rect fillRect = { ball.posX, ball.posY, 10, 10 };
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF );
+		SDL_RenderFillRect( renderer, &fillRect);
+
+		SDL_RenderPresent( renderer );
+
+		frameTime = SDL_GetTicks() - frameStart;
+		if ( frameTime < frameDelay )
+		{
+			SDL_Delay( frameDelay - frameTime );
+		}
+	}
+
+	quit();
+
+	return 0;
+}
+
+
+
+int init( void )
 {
 	// Initialize SDL.
 	if ( SDL_Init( SDL_INIT_VIDEO ) < 0 )
@@ -29,48 +98,16 @@ int main()
 		return 2;
 	}
 
-	// Wait 3 seconds then exit the game.
-	int quit = 0;
-	SDL_Event e;
+	// Create renderer for window.
+	renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED );
 
-	//The window renderer
-	SDL_Renderer* gRenderer = NULL;
+	return 0;
+}
 
-	//Create renderer for window
-	gRenderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED );
-
-
-	while (!quit){
-
-		while (SDL_PollEvent(&e) != 0) {
-
-			if (e.type == SDL_QUIT) {
-				quit = 1;
-
-			}
-			else if (e.type == SDL_KEYDOWN) {
-				switch(e.key.keysym.sym) {
-					case SDLK_ESCAPE:
-						quit = 1;
-						break;
-				}
-			}
-
-			SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-			SDL_RenderClear( gRenderer );
-
-
-			SDL_Rect fillRect = { SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
-			SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF );
-			SDL_RenderFillRect( gRenderer, &fillRect);
-
-			SDL_RenderPresent( gRenderer );
-		}
-	}
-	SDL_DestroyRenderer(gRenderer);
+void quit( void )
+{
+	SDL_DestroyRenderer( renderer );
 	SDL_DestroyWindow( window );
 
 	SDL_Quit();
-
-	return 0;
 }
