@@ -83,7 +83,7 @@ int main()
 
 		frameStart = SDL_GetTicks();
 
-		ball_step_pos( &ball );
+		ball_step_pos( &ball, &player1, &player2 );
 
 		SDL_SetRenderDrawColor( renderer, 143, 151, 166, 255);
 		SDL_RenderClear( renderer );
@@ -159,12 +159,12 @@ void filet() {
 int raquette() {
 
 
-	SDL_Rect fillRaquette1 = {20,player1.posY,5,60};
+	SDL_Rect fillRaquette1 = {PLAYER_OFFSETX, player1.posY, PLAYER_WIDTH, PLAYER_HEIGHT};
         SDL_SetRenderDrawColor(renderer, 46, 107, 219, 255 );
         SDL_RenderFillRect( renderer, &fillRaquette1);
 
 
-	SDL_Rect fillRaquette2 = {SCREEN_WIDTH-25,player2.posY,5,60};
+	SDL_Rect fillRaquette2 = {SCREEN_WIDTH - PLAYER_OFFSETX - PLAYER_WIDTH, player2.posY, PLAYER_WIDTH, PLAYER_HEIGHT};
         SDL_SetRenderDrawColor(renderer, 46, 107, 219, 255 );
         SDL_RenderFillRect( renderer, &fillRaquette2);
 }

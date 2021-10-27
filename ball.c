@@ -21,12 +21,12 @@ void ball_reset( ball_t* b )
 	b->velY = b->initVelY;
 }
 
-void ball_step_pos( ball_t* b )
+void ball_step_pos( ball_t* b, player* p1, player* p2 )
 {
 	b->posX += b->velX;
 	b->posY += b->velY;
 
-	float acc = 0.2F;
+	float acc = 1.5F;
 
 	// Playground collision test.
 	// Vertical.
@@ -40,5 +40,42 @@ void ball_step_pos( ball_t* b )
 	if ( (b->posX >= SCREEN_WIDTH && b->velX > 0) || (b->posX <= 0 && b->velX < 0) )
 	{
 		ball_reset( b );
+	}
+
+	// Player collision.
+	// Going towards player 2.
+	if ( b->velX > 0 )
+	{
+		// Player AABB.
+		int x0 = SCREEN_WIDTH - PLAYER_OFFSETX - PLAYER_WIDTH;
+		int x1 = x0 + PLAYER_WIDTH;
+
+		if ( b->posY + 10 >= p2->posY && b->posY <= p2->posY + PLAYER_HEIGHT ) {
+			if ( b->posX + 10 >= x0 && b->posX <= x1 ) {
+				b->velX = -b->velX;
+				b->velX += (b->velX > 0 && fabs(b->velX) < 10) ? acc : -acc;
+
+				float y = (float) b->posY - (float) p2->posY - (float) PLAYER_HEIGHT / 2;
+				b->velY = y / (PLAYER_HEIGHT * 0.05F);
+			}
+		}
+	}
+
+	// Going towards player 1.
+	else
+	{
+		// Player AABB.
+		int x0 = PLAYER_OFFSETX;
+		int x1 = x0 + PLAYER_WIDTH;
+
+		if ( b->posY + 10 >= p1->posY && b->posY <= p1->posY + PLAYER_HEIGHT ) {
+			if ( b->posX + 10 >= x0 && b->posX <= x1 ) {
+				b->velX = -b->velX;
+				b->velX += (b->velX > 0 && fabs(b->velX) < 10) ? acc : -acc;
+
+				float y = (float) b->posY - (float) p1->posY - (float) PLAYER_HEIGHT / 2;
+				b->velY = y / (PLAYER_HEIGHT * 0.05F);
+			}
+		}
 	}
 }
