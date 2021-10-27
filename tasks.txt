@@ -5,7 +5,7 @@ Initialisations:
  3. Scores à 0
 
 La boucle de jeu constituée des étapes principales suivantes:
- 1. Affichage du filet
+ 1 OK. Affichage du filet
  2. Affichage du score (à coder en dernier!)
  3. Affichage des raquettes et de la balle
  4. Acquisition des évènements du clavier (joueur 1 et joueur 2)
