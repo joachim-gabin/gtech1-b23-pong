@@ -39,6 +39,10 @@ void ball_step_pos( ball_t* b, player* p1, player* p2 )
 	// Horizontal.
 	if ( (b->posX >= SCREEN_WIDTH && b->velX > 0) || (b->posX <= 0 && b->velX < 0) )
 	{
+		// We can determine who scored based on the ball's velocity.
+		if ( b->velX > 0 ) p1->score++;
+		else               p2->score++;
+
 		ball_reset( b );
 	}
 
@@ -53,10 +57,10 @@ void ball_step_pos( ball_t* b, player* p1, player* p2 )
 		if ( b->posY + 10 >= p2->posY && b->posY <= p2->posY + PLAYER_HEIGHT ) {
 			if ( b->posX + 10 >= x0 && b->posX <= x1 ) {
 				b->velX = -b->velX;
-				b->velX += (b->velX > 0 && fabs(b->velX) < 10) ? acc : -acc;
+				b->velX += (b->velX > 0 && fabs(b->velX) < 20) ? acc : -acc;
 
 				float y = (float) b->posY - (float) p2->posY - (float) PLAYER_HEIGHT / 2;
-				b->velY = y / (PLAYER_HEIGHT * 0.05F);
+				b->velY = y / (PLAYER_HEIGHT * 0.1F);
 			}
 		}
 	}
@@ -71,10 +75,10 @@ void ball_step_pos( ball_t* b, player* p1, player* p2 )
 		if ( b->posY + 10 >= p1->posY && b->posY <= p1->posY + PLAYER_HEIGHT ) {
 			if ( b->posX + 10 >= x0 && b->posX <= x1 ) {
 				b->velX = -b->velX;
-				b->velX += (b->velX > 0 && fabs(b->velX) < 10) ? acc : -acc;
+				b->velX += (b->velX > 0 && fabs(b->velX) < 20) ? acc : -acc;
 
 				float y = (float) b->posY - (float) p1->posY - (float) PLAYER_HEIGHT / 2;
-				b->velY = y / (PLAYER_HEIGHT * 0.05F);
+				b->velY = y / (PLAYER_HEIGHT * 0.1F);
 			}
 		}
 	}

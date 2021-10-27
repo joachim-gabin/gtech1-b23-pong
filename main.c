@@ -8,94 +8,58 @@
 #include "pong.h"
 #include "ball.h"
 #include "player.h"
+#include "score.h"
+
 
 
 SDL_Window* window = 0;
 SDL_Renderer* renderer = 0;
 
-int  init( void );
-void quit( void );
 player player1;
 player player2;
+ball_t ball;
+
+int  init( void );
+void update( void );
+void render( void );
+void quit( void );
+
 
 
 int main()
 {
-	player1.posY = 0;
-	player2.posY = 0;
-
 	int initCode = init();
 	if ( initCode )
 		return initCode;
 
-	// Wait 3 seconds then exit the game.
 	bool closeRequest = false;
 	SDL_Event e;
 
-	ball_t ball;
-	ball_init( &ball, 3, 3 );
-
 	Uint32 frameStart, frameTime, frameDelay = 20;
+	while ( !closeRequest )
+	{
+		frameStart = SDL_GetTicks();
 
-	while (!closeRequest){
-
-		while (SDL_PollEvent(&e) != 0) {
-
+		// Poll window events.
+		while ( SDL_PollEvent(&e) != 0 )
+		{
 			if (e.type == SDL_QUIT) {
 				closeRequest = true;
-
 			}
 			else if (e.type == SDL_KEYDOWN) {
 				switch(e.key.keysym.sym) {
-					case SDLK_ESCAPE:
-						closeRequest = true;
-						break;
+				case SDLK_ESCAPE:
+					closeRequest = true;
+					break;
+				case SDLK_n:
+					player1.score++;
+					break;
 				}
 			}
 		}
-		const Uint8*keystates = SDL_GetKeyboardState(0);
 
-		if(keystates[SDL_SCANCODE_W]){
-			player1.posY -= 7;
-			if(player1.posY <= 0)
-				player1.posY = 0;
-		}
-
-                if(keystates[SDL_SCANCODE_S]){
-                        player1.posY += 7;
-			if (player1.posY >= SCREEN_HEIGHT - 60)
-				player1.posY = SCREEN_HEIGHT - 60;
-		}
-
-                if(keystates[SDL_SCANCODE_UP]){
-                        player2.posY -= 7;
-			if (player2.posY <= 0)
-				player2.posY = 0;
-		}
-
-                if(keystates[SDL_SCANCODE_DOWN]){
-                        player2.posY += 7;
-			if (player2.posY >= SCREEN_HEIGHT - 60)
-				player2.posY = SCREEN_HEIGHT - 60;
-		}
-
-
-
-		frameStart = SDL_GetTicks();
-
-		ball_step_pos( &ball, &player1, &player2 );
-
-		SDL_SetRenderDrawColor( renderer, 143, 151, 166, 255);
-		SDL_RenderClear( renderer );
-
-		filet();
-		raquette();
-
-		SDL_Rect fillRect = { ball.posX, ball.posY, 10, 10 };
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF );
-		SDL_RenderFillRect( renderer, &fillRect);
-
-		SDL_RenderPresent( renderer );
+		update();
+		render();
 
 		frameTime = SDL_GetTicks() - frameStart;
 		if ( frameTime < frameDelay )
@@ -136,7 +100,64 @@ int init( void )
 	// Create renderer for window.
 	renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED );
 
+	int centerY = (SCREEN_HEIGHT - PLAYER_HEIGHT) / 2;
+	player1.posY = centerY;
+	player2.posY = centerY;
+	player1.score = 0;
+	player2.score = 0;
+
+	ball_init( &ball, 3, 3 );
+
 	return 0;
+}
+
+void update( void )
+{
+	const Uint8* keystates = SDL_GetKeyboardState( 0 );
+
+	// Player input.
+	if ( keystates[SDL_SCANCODE_W] ) {
+		player1.posY -= 10;
+		if ( player1.posY <= 0 )
+			player1.posY = 0;
+	}
+	if ( keystates[SDL_SCANCODE_S] ) {
+		player1.posY += 10;
+		if ( player1.posY >= SCREEN_HEIGHT - 60 )
+			player1.posY = SCREEN_HEIGHT - 60;
+	}
+	if ( keystates[SDL_SCANCODE_UP] ) {
+		player2.posY -= 10;
+		if ( player2.posY <= 0 )
+			player2.posY = 0;
+	}
+	if ( keystates[SDL_SCANCODE_DOWN] ) {
+		player2.posY += 10;
+		if ( player2.posY >= SCREEN_HEIGHT - 60 )
+			player2.posY = SCREEN_HEIGHT - 60;
+	}
+
+	// Ball movement.
+	ball_step_pos( &ball, &player1, &player2 );
+}
+
+void render( void )
+{
+	SDL_SetRenderDrawColor( renderer, 143, 151, 166, 255);
+	SDL_RenderClear( renderer );
+
+	// Player scores.
+	draw_number( renderer, player1.score, 150, 50 );
+	draw_number( renderer, player2.score, SCREEN_WIDTH - 150, 50 );
+
+	filet();
+	raquette();
+
+	SDL_Rect fillRect = { ball.posX, ball.posY, 10, 10 };
+	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF );
+	SDL_RenderFillRect( renderer, &fillRect);
+
+	SDL_RenderPresent( renderer );
 }
 
 void quit( void )

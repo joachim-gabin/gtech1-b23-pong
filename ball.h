@@ -8,8 +8,8 @@
 typedef struct
 {
 	// Ball's position.
-	int posX;
-	int posY;
+	float posX;
+	float posY;
 
 	// Ball's velocity.
 	float velX;
