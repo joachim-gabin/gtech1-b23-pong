@@ -1,13 +1,15 @@
 #ifndef PONG_BALL_H
 #define PONG_BALL_H
 
+#include "player.h"
+
 
 
 typedef struct
 {
 	// Ball's position.
-	int posX;
-	int posY;
+	float posX;
+	float posY;
 
 	// Ball's velocity.
 	float velX;
@@ -28,7 +30,8 @@ void ball_init( ball_t* b, int initial_velX, int initial_velY );
 void ball_reset( ball_t* b );
 
 // Updates the ball's position according to its velocity.
-void ball_step_pos( ball_t* b );
+// Players are passed to test collision.
+void ball_step_pos( ball_t* b, player_t* p1, player_t* p2 );
 
 
 

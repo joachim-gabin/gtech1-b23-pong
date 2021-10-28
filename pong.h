@@ -9,7 +9,7 @@
 #endif
 
 // Game constants.
-#define SCREEN_WIDTH  640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH  800
+#define SCREEN_HEIGHT 600
 
 #endif // PONG_PONG_H
