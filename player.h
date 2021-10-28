@@ -8,9 +8,12 @@
 
 typedef struct
 {
+	/// The Y position of the player's racket, in pixels.
 	int posY;
+
+	/// The player's score.
 	int score;
 
-} player;
+} player_t;
 
 #endif // PONG_PLAYER_H

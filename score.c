@@ -2,6 +2,10 @@
 
 #include <SDL2/SDL.h>
 
+
+
+/// Digit constants. These strings indicate which rectangles in the 3x5 grid should be visible
+/// in order to represent a specific decimal digit.
 static char* zero  = "xxxx xx xx xxxx";
 static char* one   = "  x  x  x  x  x";
 static char* two   = "xxx  xxxxx  xxx";
@@ -15,11 +19,15 @@ static char* nine  = "xxxx xxxx  xxxx";
 
 static char** digits[] = { &zero, &one, &two, &three, &four, &five, &six, &seven, &eight, &nine };
 
+
+
+/// Draw a single digit.
 static void draw_digit( SDL_Renderer* r, int digit, int posX, int posY )
 {
 	SDL_Rect rect = { 0, 0, 10, 10 };
 	SDL_SetRenderDrawColor( r, 46, 107, 219, 255 );
 
+	/// Loop if overflow to prevent wrong memory access.
 	digit = digit % 10;
 
 	for ( int y = 0; y < 5; ++y )

@@ -1,5 +1,3 @@
-
-
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -15,14 +13,18 @@
 SDL_Window* window = 0;
 SDL_Renderer* renderer = 0;
 
-player player1;
-player player2;
-ball_t ball;
+player_t player1;
+player_t player2;
+ball_t   ball;
 
 int  init( void );
 void update( void );
 void render( void );
 void quit( void );
+
+// Drawing functions.
+void draw_net( void );
+void draw_rackets( void );
 
 
 
@@ -43,16 +45,13 @@ int main()
 		// Poll window events.
 		while ( SDL_PollEvent(&e) != 0 )
 		{
-			if (e.type == SDL_QUIT) {
+			if ( e.type == SDL_QUIT ) {
 				closeRequest = true;
 			}
-			else if (e.type == SDL_KEYDOWN) {
-				switch(e.key.keysym.sym) {
+			else if ( e.type == SDL_KEYDOWN ) {
+				switch ( e.key.keysym.sym ) {
 				case SDLK_ESCAPE:
 					closeRequest = true;
-					break;
-				case SDLK_n:
-					player1.score++;
 					break;
 				}
 			}
@@ -143,19 +142,19 @@ void update( void )
 
 void render( void )
 {
-	SDL_SetRenderDrawColor( renderer, 143, 151, 166, 255);
+	SDL_SetRenderDrawColor( renderer, 143, 151, 166, 255 );
 	SDL_RenderClear( renderer );
 
 	// Player scores.
 	draw_number( renderer, player1.score, 150, 50 );
 	draw_number( renderer, player2.score, SCREEN_WIDTH - 150, 50 );
 
-	filet();
-	raquette();
+	draw_net();
+	draw_rackets();
 
 	SDL_Rect fillRect = { ball.posX, ball.posY, 10, 10 };
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF );
-	SDL_RenderFillRect( renderer, &fillRect);
+	SDL_SetRenderDrawColor( renderer, 0xFF, 0x00, 0x00, 0xFF );
+	SDL_RenderFillRect( renderer, &fillRect );
 
 	SDL_RenderPresent( renderer );
 }
@@ -168,24 +167,22 @@ void quit( void )
 	SDL_Quit();
 }
 
-
-void filet() {
-
-
-	SDL_Rect fillRect = {SCREEN_WIDTH/2-5,0,10,SCREEN_HEIGHT};
-	SDL_SetRenderDrawColor(renderer, 46, 107, 219, 255 );
-	SDL_RenderFillRect( renderer, &fillRect);
+// Draws the net at the center of the window.
+void draw_net( void )
+{
+	SDL_Rect fillRect = { SCREEN_WIDTH / 2 - 5, 0, 10, SCREEN_HEIGHT };
+	SDL_SetRenderDrawColor( renderer, 46, 107, 219, 255 );
+	SDL_RenderFillRect( renderer, &fillRect );
 }
 
-int raquette() {
+// Draws both the player's rackets.
+void draw_rackets( void )
+{
+	SDL_Rect p1 = { PLAYER_OFFSETX, player1.posY, PLAYER_WIDTH, PLAYER_HEIGHT };
+        SDL_SetRenderDrawColor( renderer, 46, 107, 219, 255 );
+        SDL_RenderFillRect( renderer, &p1 );
 
-
-	SDL_Rect fillRaquette1 = {PLAYER_OFFSETX, player1.posY, PLAYER_WIDTH, PLAYER_HEIGHT};
-        SDL_SetRenderDrawColor(renderer, 46, 107, 219, 255 );
-        SDL_RenderFillRect( renderer, &fillRaquette1);
-
-
-	SDL_Rect fillRaquette2 = {SCREEN_WIDTH - PLAYER_OFFSETX - PLAYER_WIDTH, player2.posY, PLAYER_WIDTH, PLAYER_HEIGHT};
-        SDL_SetRenderDrawColor(renderer, 46, 107, 219, 255 );
-        SDL_RenderFillRect( renderer, &fillRaquette2);
+	SDL_Rect p2 = { SCREEN_WIDTH - PLAYER_OFFSETX - PLAYER_WIDTH, player2.posY, PLAYER_WIDTH, PLAYER_HEIGHT };
+        SDL_SetRenderDrawColor( renderer, 46, 107, 219, 255 );
+        SDL_RenderFillRect( renderer, &p2 );
 }

@@ -31,7 +31,7 @@ void ball_reset( ball_t* b );
 
 // Updates the ball's position according to its velocity.
 // Players are passed to test collision.
-void ball_step_pos( ball_t* b, player* p1, player* p2 );
+void ball_step_pos( ball_t* b, player_t* p1, player_t* p2 );
 
 
 
